@@ -22,10 +22,14 @@ class Solution {
     }
     
     public List<String> getSuccessors(String str) {
+        System.out.println("***** " + str + " ***********");
         List<String> res = new LinkedList<>();
         for (int i = 0; i < str.length(); i++) {
-            res.add(str.substring(0, i) + (str.charAt(i) == '0' ? 9 :  str.charAt(i) - '0' - 1) + str.substring(i+1));
-            res.add(str.substring(0, i) + (str.charAt(i) == '9' ? 0 :  str.charAt(i) - '0' + 1) + str.substring(i+1));
+            String minus = str.substring(0, i) + (str.charAt(i) == '0' ? 9 :  str.charAt(i) - '0' - 1) + str.substring(i+1);
+            String plus = str.substring(0, i) + (str.charAt(i) == '9' ? 0 :  str.charAt(i) - '0' + 1) + str.substring(i+1);
+            res.add(plus);
+            res.add(minus);
+            System.out.println("plus " + plus + "\tminus " + minus);
         }
         return res;
     }
