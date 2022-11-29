@@ -1,74 +1,76 @@
 class MyCircularQueue {
-
-    int spaceLeft; // after enQ, this will reduce and after dQ, will increase
-	ListNode left;
-	ListNode right;
-
+    ListNode start, end;
+    int spaceLeft;
+    
     public MyCircularQueue(int k) {
+        start = new ListNode(null, null, 0);
+        end = new ListNode(start, null, 0);
+        start.next = end;
         spaceLeft = k;
-		left = new ListNode(0, null, null);
-		right = new ListNode(0, left, null);
-		left.next = right;
     }
     
-    public boolean enQueue(int val) {
+    public boolean enQueue(int value) {
         if (isFull()) {
-			return false;
-		}
-		ListNode newNode = new ListNode(val, right.prev, right);
-		// newNode.prev.next = newNode;
-		// newNode.next.prev = newNode;
-		right.prev.next = newNode;   // this code is faster than above commented code ie connecting the pointers using the new node but here V R connecting the nodes using the prev nodes
-		right.prev = newNode;
-		spaceLeft--;
-		return true;
+            return false;
+        }
+        ListNode newNode = new ListNode(end.prev, end, value);
+        end.prev.next = newNode;
+        end.prev = newNode;
+        spaceLeft--;
+        printDLL();
+        return true;
     }
     
     public boolean deQueue() {
         if (isEmpty()) {
-			return false;
-		}
-		// ListNode curr = left.next;
-		// left.next = curr.next;
-		// curr.next.prev = left;
-		left.next = left.next.next;
-		left.next.prev = left;
-		spaceLeft++;
-		return true;
+            return false;
+        }
+        start.next = start.next.next;
+        start.next.prev = start;
+        spaceLeft++;
+        return true;
     }
     
     public int Front() {
         if (isEmpty()) {
-			return -1;
-		}
-		return left.next.val;
+            return -1;
+        }
+        return start.next.val;
     }
     
     public int Rear() {
         if (isEmpty()) {
-			return -1;
-		}
-		return right.prev.val;
+            return -1;
+        }
+        return end.prev.val;
     }
     
     public boolean isEmpty() {
-        return left.next == right;
+        return start.next == end;
     }
     
     public boolean isFull() {
         return spaceLeft == 0;
     }
+    
+    public void printDLL() {
+        ListNode curr = start.next;
+        while (curr != null) {
+            System.out.print(curr.val + " ");
+            curr = curr.next;
+        }
+    }
 }
 
 class ListNode {
-	ListNode prev, next;
-	int val;
-
-	public ListNode(int _val, ListNode _prev, ListNode _next) {
-		val = _val;
-		prev = _prev;
-		next = _next;
-	}
+    ListNode next, prev;
+    int val;
+    
+    ListNode(ListNode p, ListNode n, int v) {
+        prev = p;
+        next = n;
+        val = v;
+    }
 }
 
 /**
